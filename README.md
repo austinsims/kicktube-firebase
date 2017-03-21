@@ -4,9 +4,34 @@ TODO: Write project description.
 
 ## Code organization
 
-The project is split into two separate Node packages: One for Firebase functions
-in `functions`, and another for the Web app itself in `client`.  The `client` subdirectory is split into `dist` and `src`.  `dist` is where webpack will put
-the final bundled app, and `src` is where the input files live.  You must run
-webpack before running `firebase deploy` since `dist` starts empty.
+The project is split into two separate Node packages: One containing a Firebase
+functions in the `functions` directory, and a React app calling that function
+in `client`.
 
-TODO: Set up a build pipeline to automate the webpack step, and create a deploy step that depends on it.
+## HOWTO
+
+Install backend deps:
+~~~~
+cd functions
+npm install
+cd ..
+~~~~
+
+Install frontend deps and build a bundle:
+~~~~
+cd client
+npm install
+npm run build
+cd ..
+~~~~ 
+
+Configure API keys:
+~~~~
+firebase functions:config:set songkick.key="0xDEADBEEF"
+firebase functions:config:set youtube.key="0xBEEFDEAD"
+~~~~
+
+Deploy:
+~~~~
+firebase deploy
+~~~~
