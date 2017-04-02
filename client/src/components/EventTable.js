@@ -1,12 +1,17 @@
 import React, {Component} from 'react';
 import YouTube from 'react-youtube';
 import './EventTable.css';
+import {connect} from 'react-redux';
+import {
+  playNextVideo,
+  playPrevVideo,
+  stopVideoPlayback,
+  playVideoAtIndex,
+} from '../actions/playingVideoIndex';
+import {bindActionCreators} from 'redux';
 
 class EventTable extends Component {
   componentWillMount() {
-    this.setState({
-      playingVideoIndex: null,
-    });
   }
   componentDidMount() {
     this.boundKeyDownListener = this.onKeyDown.bind(this);
@@ -18,7 +23,7 @@ class EventTable extends Component {
     }
   }
   playVideo(index) {
-    this.setState({playingVideoIndex: index});
+    this.props.playVideoAtIndex(index);
   }
   onKeyDown(event) {
     if (event.keyCode === 39 /* right arrow */) {
@@ -29,7 +34,7 @@ class EventTable extends Component {
   }
   maybePlayNextVideo() {
     // Don't do anything if a video isn't playing.
-    if (this.state.playingVideoIndex === null) {
+    if (this.props.playingVideoIndex === null) {
       return;
     }
 
@@ -37,14 +42,14 @@ class EventTable extends Component {
     const events = this.props.events;
     const nextEventWithVideo = events.find((event, index) =>
         !!event.videoId &&
-        index > this.state.playingVideoIndex);
+        index > this.props.playingVideoIndex);
     if (!nextEventWithVideo) {
       return;
     }
 
     // Play it if found.
     const newIndex = events.indexOf(nextEventWithVideo);
-    this.setState({playingVideoIndex: newIndex});
+    this.props.playVideoAtIndex(newIndex);
   }
   maybePlayPrevVideo() {
     // TODO
@@ -65,7 +70,7 @@ class EventTable extends Component {
           <tbody>
             {
               this.props.events.map((event, index) => {
-                const playing = index === this.state.playingVideoIndex;
+                const playing = index === this.props.playingVideoIndex;
                 return (<TableRow event={event}
                                   playing={playing}
                                   key={index}
@@ -79,6 +84,13 @@ class EventTable extends Component {
       </div>
     );
   }
+}
+EventTable.propTypes = {
+  playNextVideo: React.PropTypes.func.isRequired,
+  playPrevVideo: React.PropTypes.func.isRequired,
+  stopVideoPlayback: React.PropTypes.func.isRequired,
+  playVideoAtIndex: React.PropTypes.func.isRequired,
+  playingVideoIndex: React.PropTypes.number,
 }
 
 class TableRow extends Component {
@@ -127,5 +139,13 @@ class VideoTd extends Component {
   }
 }
 
-export default EventTable;
+export default connect(
+  state => ({playingVideoIndex: state.playingVideoIndex}),
+  dispatch => bindActionCreators({
+    playNextVideo,
+    playPrevVideo,
+    stopVideoPlayback,
+    playVideoAtIndex,
+  }, dispatch)
+)(EventTable);
 
