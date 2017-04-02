@@ -9,28 +9,9 @@ class App extends Component {
       events: null,
       loadingMessage: 'Determining your location...',
     });
-    getLocation()
-      .then(getUrlForLocation)
-      .then(url => {
-        this.setState({
-          loadingMessage: 'Fetching events near you...',
-        });
-        return fetch(url);
-      })
-      .then(checkRespOkYieldingText)
-      .then(parseJson)
-      .then(events => {
-        this.setState({
-          events,
-          loadingMessage: null,
-        });
-      })
-      .catch(reason => {
-        this.setState({
-          loadingMessage: 'Unfortunately, an error occurred: ' + reason,
-        })
-      });
+    this.requestEvents();
   }
+
   render() {
     return (
       <div>
@@ -42,6 +23,44 @@ class App extends Component {
       </div>
     );
   }
+
+  requestEvents() {
+    // TODO: Make a URL flag for this instead?
+    const debugMode = window.location.host.includes('localhost');
+    let promise;
+    if (debugMode) {
+      promise = new Promise((resolve) => {
+        resolve(eventsData);
+      });
+    } else {
+      promise = new Promise((resolve, reject) => {
+        getLocation()
+          .then(getUrlForLocation)
+          .then(url => {
+            this.setState({
+              loadingMessage: 'Fetching events near you...',
+            });
+            return fetch(url);
+          })
+          .then(checkRespOkYieldingText)
+          .then(parseJson)
+          .then(resolve);
+      });
+    }
+
+    promise.then(events => {
+      this.setState({
+        events,
+        loadingMessage: null,
+      });
+    })
+    .catch(reason => {
+      this.setState({
+        loadingMessage: 'Unfortunately, an error occurred: ' + reason,
+      })
+    });
+  }
+}
 }
 
 const HOST = 'https://us-central1-kicktube-87085.cloudfunctions.net';
