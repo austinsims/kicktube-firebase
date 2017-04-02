@@ -2,6 +2,7 @@ import './App.css';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {getLocation} from '../util/location'
+import {setEvents} from '../actions/events';
 import {updateLoadingMessage} from '../actions/loadingMessage';
 import eventsData from '../data/events';
 import EventTable from './EventTable';
@@ -10,9 +11,7 @@ import React, { Component } from 'react';
 class App extends Component {
   componentWillMount() {
     this.props.updateLoadingMessage('Determining your location...');
-    this.setState({
-      events: null,
-    });
+    this.props.setEvents(null);
     this.requestEvents();
   }
 
@@ -22,7 +21,7 @@ class App extends Component {
         <h1>Kicktube</h1>
         <h3>a mashup of Songkick and Youtube</h3>
         {this.props.loadingMessage || ''}
-        {this.state.events && <EventTable events={this.state.events} />}
+        {this.props.events && <EventTable events={this.props.events} />}
         {/* TODO: Don't forget requried Songkick attribution footer. */}
       </div>
     );
@@ -30,7 +29,8 @@ class App extends Component {
 
   requestEvents() {
     // TODO: Make a URL flag for this instead?
-    const debugMode = window.location.host.includes('localhost');
+    // const debugMode = window.location.host.includes('localhost');
+    const debugMode = false;
     let promise;
     if (debugMode) {
       promise = new Promise((resolve) => {
@@ -52,9 +52,7 @@ class App extends Component {
 
     promise.then(events => {
       this.props.updateLoadingMessage(null);
-      this.setState({
-        events,
-      });
+      this.props.setEvents(events);
     })
     .catch(reason => {
       const msg = 'Unfortunately, an error occurred: ' + reason;
@@ -65,7 +63,9 @@ class App extends Component {
 
 App.propTypes = {
   loadingMessage: React.PropTypes.string,
+  events: React.PropTypes.array,
   updateLoadingMessage: React.PropTypes.func.isRequired,
+  setEvents: React.PropTypes.func.isRequired,
 }
 
 const HOST = 'https://us-central1-kicktube-87085.cloudfunctions.net';
@@ -95,6 +95,6 @@ const checkRespOkYieldingText = (response) => new Promise((resolve, reject) => {
 })
 
 export default connect(
-  state => ({loadingMessage: state.loadingMessage}),
-  dispatch => bindActionCreators({updateLoadingMessage}, dispatch),
+  state => ({loadingMessage: state.loadingMessage, events: state.events}),
+  dispatch => bindActionCreators({updateLoadingMessage, setEvents}, dispatch),
 )(App);

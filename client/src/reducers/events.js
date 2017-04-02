@@ -1,4 +1,6 @@
 export default function events(state = null, action) {
-  // TODO
-  return state;
+  if (action.type !== 'SET_EVENTS') {
+    return state;
+  }
+  return action.events;
 }
