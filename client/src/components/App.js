@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import EventTable from './EventTable';
-import {getLocation} from './location'
+import {getLocation} from '../util/location'
 
 class App extends Component {
   componentWillMount() {
