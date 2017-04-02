@@ -29,8 +29,7 @@ class App extends Component {
 
   requestEvents() {
     // TODO: Make a URL flag for this instead?
-    // const debugMode = window.location.host.includes('localhost');
-    const debugMode = false;
+    const debugMode = window.location.host.includes('localhost');
     let promise;
     if (debugMode) {
       promise = new Promise((resolve) => {
