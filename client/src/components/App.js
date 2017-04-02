@@ -1,13 +1,17 @@
-import React, { Component } from 'react';
 import './App.css';
-import EventTable from './EventTable';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 import {getLocation} from '../util/location'
+import {updateLoadingMessage} from '../actions/loadingMessage';
+import eventsData from '../data/events';
+import EventTable from './EventTable';
+import React, { Component } from 'react';
 
 class App extends Component {
   componentWillMount() {
+    this.props.updateLoadingMessage('Determining your location...');
     this.setState({
       events: null,
-      loadingMessage: 'Determining your location...',
     });
     this.requestEvents();
   }
@@ -17,7 +21,7 @@ class App extends Component {
       <div>
         <h1>Kicktube</h1>
         <h3>a mashup of Songkick and Youtube</h3>
-        {this.state.loadingMessage || ''}
+        {this.props.loadingMessage || ''}
         {this.state.events && <EventTable events={this.state.events} />}
         {/* TODO: Don't forget requried Songkick attribution footer. */}
       </div>
@@ -37,9 +41,7 @@ class App extends Component {
         getLocation()
           .then(getUrlForLocation)
           .then(url => {
-            this.setState({
-              loadingMessage: 'Fetching events near you...',
-            });
+            this.props.updateLoadingMessage('Fetching events near you...');
             return fetch(url);
           })
           .then(checkRespOkYieldingText)
@@ -49,18 +51,21 @@ class App extends Component {
     }
 
     promise.then(events => {
+      this.props.updateLoadingMessage(null);
       this.setState({
         events,
-        loadingMessage: null,
       });
     })
     .catch(reason => {
-      this.setState({
-        loadingMessage: 'Unfortunately, an error occurred: ' + reason,
-      })
+      const msg = 'Unfortunately, an error occurred: ' + reason;
+      this.props.updateLoadingMessage(msg);
     });
   }
 }
+
+App.propTypes = {
+  loadingMessage: React.PropTypes.string,
+  updateLoadingMessage: React.PropTypes.func.isRequired,
 }
 
 const HOST = 'https://us-central1-kicktube-87085.cloudfunctions.net';
@@ -89,4 +94,7 @@ const checkRespOkYieldingText = (response) => new Promise((resolve, reject) => {
   });
 })
 
-export default App;
+export default connect(
+  state => ({loadingMessage: state.loadingMessage}),
+  dispatch => bindActionCreators({updateLoadingMessage}, dispatch),
+)(App);
