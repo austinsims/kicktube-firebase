@@ -73,6 +73,10 @@ const getMetroAreaId = location => new Promise((resolve, reject) => {
 
 const getEventsForMetroAreaId = id => new Promise((resolve, reject) => {
   const path = `/api/3.0/metro_areas/${id}/calendar.json`;
+  const eventsPerPage = functions.config().songkick.events_per_page || 10;
+  const params = [
+    `per_page=${eventsPerPage}`,
+  ];
   const onRequestFinished = (error, response, body) => {
     checkSuccessYieldingBody(response, body)
       .then(parseJson)
@@ -94,7 +98,7 @@ const getEventsForMetroAreaId = id => new Promise((resolve, reject) => {
         reject(msg);
       });
   };
-  getUrl(path).then(url => request(url, onRequestFinished));
+  getUrl(path, params).then(url => request(url, onRequestFinished));
 });
 
 /**

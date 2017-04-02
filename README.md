@@ -31,6 +31,11 @@ firebase functions:config:set songkick.key="0xDEADBEEF"
 firebase functions:config:set youtube.key="0xBEEFDEAD"
 ~~~~
 
+Configure additional settings (optional):
+~~~~
+firebase functions:config:set songkick.events_per_page=30
+~~~~
+
 Deploy:
 ~~~~
 firebase deploy
