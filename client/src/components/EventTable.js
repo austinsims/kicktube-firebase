@@ -2,10 +2,9 @@ import './EventTable.css';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import React, {Component} from 'react';
-import YouTube from 'react-youtube';
+import VideoTd from './VideoTd';
 
 import {
-  playVideoAtIndex,
   playVideoOfNextEventIfPresent
 } from '../actions/events';
 
@@ -21,9 +20,6 @@ class EventTable extends Component {
     if (this.boundKeyDownListener) {
       window.removeEventListener('keydown', this.boundKeyDownListener);
     }
-  }
-  playVideo(index) {
-    this.props.playVideoAtIndex(index);
   }
   onKeyDown(event) {
     if (event.keyCode === 39 /* right arrow */) {
@@ -48,14 +44,8 @@ class EventTable extends Component {
             </tr>
           </thead>
           <tbody>
-            {
-              this.props.events.map((event, index) => {
-                return (<TableRow event={event}
-                                  key={index}
-                                  index={index}
-                                  playVideo={this.playVideo.bind(this)}/>)
-              })
-            }
+            {this.props.events.map((event, index) =>
+                <TableRow event={event} key={index} index={index}/>)}
           </tbody>
         </table>
         {/* TODO: Pagination */}
@@ -64,7 +54,6 @@ class EventTable extends Component {
   }
 }
 EventTable.propTypes = {
-  playVideoAtIndex: React.PropTypes.func.isRequired,
   playVideoOfNextEventIfPresent: React.PropTypes.func.isRequired,
 }
 
@@ -77,45 +66,16 @@ class TableRow extends Component {
         <td>{this.props.event.venue.displayName}</td>
         <td><a href={this.props.event.uri} target={'_blank'}>GO!</a></td>
         <VideoTd event={this.props.event}
-                 index={this.props.index}
-                 playVideo={this.props.playVideo} />
+                 index={this.props.index} />
       </tr>
     );
   }
 }
 
-class VideoTd extends Component {
-  render() {
-    const event = this.props.event;
-    const opts = {
-      height: '240',
-      width: '400',
-      playerVars: {autoplay: 1},
-    };
-
-    return (
-      <td>
-        {!!event.videoIsPlaying &&
-             <YouTube videoId={event.videoId}
-                      opts={opts}/>}
-
-        {!event.videoIsPlaying &&
-             event.videoThumbnailUrl &&
-             <img src={event.videoThumbnailUrl}
-                  onClick={() => this.props.playVideo(this.props.index)}/>}
-
-        {!event.videoIsPlaying &&
-             !event.videoThumbnailUrl &&
-             'No video found'}
-      </td>
-    );
-  }
-}
 
 export default connect(
   state => ({playingVideoIndex: state.playingVideoIndex}),
   dispatch => bindActionCreators({
-    playVideoAtIndex,
     playVideoOfNextEventIfPresent,
   }, dispatch)
 )(EventTable);

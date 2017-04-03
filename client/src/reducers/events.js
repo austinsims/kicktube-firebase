@@ -27,11 +27,10 @@ function setEvents(state, action) {
  */
 function playVideoAtIndex(state, action) {
   const indexToPlay = action.index;
-  const copy = Array.from(state).map((event, index) => {
+  return Array.from(state).map((event, index) => {
     event.videoIsPlaying = index === indexToPlay;
     return event;
   });
-  return copy;
 }
 
 /**
