@@ -2,7 +2,7 @@ import './EventTable.css';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import React, {Component} from 'react';
-import VideoTd from './VideoTd';
+import TableRow from './TableRow';
 
 import {
   playVideoOfNextEventIfPresent
@@ -10,8 +10,6 @@ import {
 
 
 class EventTable extends Component {
-  componentWillMount() {
-  }
   componentDidMount() {
     this.boundKeyDownListener = this.onKeyDown.bind(this);
     window.addEventListener('keydown', this.boundKeyDownListener);
@@ -27,8 +25,6 @@ class EventTable extends Component {
     } else if (event.keyCode === 37 /* left arrow */) {
       // TODO
     }
-  }
-  maybePlayNextVideo() {
   }
   render() {
     return (
@@ -56,22 +52,6 @@ class EventTable extends Component {
 EventTable.propTypes = {
   playVideoOfNextEventIfPresent: React.PropTypes.func.isRequired,
 }
-
-class TableRow extends Component {
-  render() {
-    return (
-      <tr>
-        <td>{this.props.event.date}</td>
-        <td>{this.props.event.displayName}</td>
-        <td>{this.props.event.venue.displayName}</td>
-        <td><a href={this.props.event.uri} target={'_blank'}>GO!</a></td>
-        <VideoTd event={this.props.event}
-                 index={this.props.index} />
-      </tr>
-    );
-  }
-}
-
 
 export default connect(
   state => ({playingVideoIndex: state.playingVideoIndex}),
