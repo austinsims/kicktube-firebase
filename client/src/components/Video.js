@@ -1,8 +1,12 @@
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {playVideoAtIndex} from '../actions/events';
 import React, {Component} from 'react';
 import YouTube from 'react-youtube';
+
+import {
+  playVideoAtIndex,
+  playVideoOfNextEventIfPresent,
+} from '../actions/events';
 
 class Video extends Component {
   render() {
@@ -16,6 +20,7 @@ class Video extends Component {
       <div>
         {!!event.videoIsPlaying &&
              <YouTube videoId={event.videoId}
+                      onEnd={this.props.playVideoOfNextEventIfPresent}
                       opts={opts}/>}
 
         {!event.videoIsPlaying &&
@@ -32,10 +37,14 @@ Video.propTypes = {
   index: React.PropTypes.number.isRequired,
   // From connect
   playVideoAtIndex: React.PropTypes.func.isRequired,
+  playVideoOfNextEventIfPresent: React.PropTypes.func.isRequired,
   events: React.PropTypes.array.isRequired,
 }
 
 export default connect(
   state => ({events: state.events}),
-  dispatch => bindActionCreators({playVideoAtIndex}, dispatch),
+  dispatch => bindActionCreators({
+    playVideoAtIndex,
+    playVideoOfNextEventIfPresent,
+  }, dispatch),
 )(Video);
