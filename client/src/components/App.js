@@ -1,4 +1,3 @@
-import './App.css';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {getLocation} from '../util/location'
