@@ -18,7 +18,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <AppBar title="Kicktube" />
+        <AppBar title="Kicktube" iconElementLeft={<span></span>}/>
         {this.props.loadingMessage || ''}
         {this.props.events && <EventTable events={this.props.events} />}
       </div>
