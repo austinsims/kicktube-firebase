@@ -53,7 +53,7 @@ class App extends Component {
       this.props.setEvents(events);
     })
     .catch(reason => {
-      const msg = 'Unfortunately, an error occurred: ' + reason;
+      const msg = 'Unfortunately, an error occurred' + (debugMode ? ': ' + reason : ' :( ');
       this.props.updateLoadingMessage(msg);
     });
   }
