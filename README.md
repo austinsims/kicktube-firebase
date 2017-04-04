@@ -5,7 +5,7 @@ TODO: Write project description.
 ## Code organization
 
 The project is split into two separate Node packages: One containing a Firebase
-functions in the `functions` directory, and a React app calling that function
+function in the `functions` directory, and a React app calling that function
 in `client`.
 
 ## HOWTO
