@@ -6,6 +6,7 @@ import {updateLoadingMessage} from '../actions/loadingMessage';
 import AppBar from 'material-ui/AppBar';
 import eventsData from '../data/events';
 import EventTable from './EventTable';
+import LoadingMessage from './LoadingMessage';
 import React, { Component } from 'react';
 
 class App extends Component {
@@ -19,7 +20,7 @@ class App extends Component {
     return (
       <div>
         <AppBar title="Kicktube" iconElementLeft={<span></span>}/>
-        {this.props.loadingMessage || ''}
+        <LoadingMessage />
         {this.props.events && <EventTable events={this.props.events} />}
       </div>
     );
