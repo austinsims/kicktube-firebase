@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import {getLocation} from '../util/location'
 import {setEvents} from '../actions/events';
 import {updateLoadingMessage} from '../actions/loadingMessage';
+import AppBar from 'material-ui/AppBar';
 import eventsData from '../data/events';
 import EventTable from './EventTable';
 import React, { Component } from 'react';
@@ -18,11 +19,9 @@ class App extends Component {
   render() {
     return (
       <div>
-        <h1>Kicktube</h1>
-        <h3>a mashup of Songkick and Youtube</h3>
+        <AppBar title="Kicktube" />
         {this.props.loadingMessage || ''}
         {this.props.events && <EventTable events={this.props.events} />}
-        {/* TODO: Don't forget requried Songkick attribution footer. */}
       </div>
     );
   }

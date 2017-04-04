@@ -1,9 +1,0 @@
-.EventTable {
-  border-collapse: collapse;
-  border: 1px solid black;
-}
-
-.EventTable th, td {
-  border: 1px solid black;
-  padding: 5px;
-}

@@ -1,8 +1,7 @@
-import './EventTable.css';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import React, {Component} from 'react';
-import TableRow from './TableRow';
+import EventCard from './EventCard';
 
 import {
   playVideoOfNextEventIfPresent
@@ -28,23 +27,9 @@ class EventTable extends Component {
   }
   render() {
     return (
-      <div>
-        <table className="EventTable">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Artists</th>
-              <th>Venue</th>
-              <th>Link</th>
-              <th>Video</th>
-            </tr>
-          </thead>
-          <tbody>
-            {this.props.events.map((event, index) =>
-                <TableRow event={event} key={index} index={index}/>)}
-          </tbody>
-        </table>
-        {/* TODO: Pagination */}
+      <div style={{padding: '15px'}}>
+        {this.props.events.map((event, index) =>
+            <EventCard event={event} key={index} index={index}/>)}
       </div>
     );
   }

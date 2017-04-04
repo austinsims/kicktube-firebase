@@ -4,7 +4,7 @@ import {playVideoAtIndex} from '../actions/events';
 import React, {Component} from 'react';
 import YouTube from 'react-youtube';
 
-class VideoTd extends Component {
+class Video extends Component {
   render() {
     const event = this.props.events[this.props.index];
     const opts = {
@@ -12,9 +12,8 @@ class VideoTd extends Component {
       width: '400',
       playerVars: {autoplay: 1},
     };
-
     return (
-      <td>
+      <div>
         {!!event.videoIsPlaying &&
              <YouTube videoId={event.videoId}
                       opts={opts}/>}
@@ -23,16 +22,12 @@ class VideoTd extends Component {
              event.videoThumbnailUrl &&
              <img src={event.videoThumbnailUrl}
                   onClick={() => this.props.playVideoAtIndex(this.props.index)}/>}
-
-        {!event.videoIsPlaying &&
-             !event.videoThumbnailUrl &&
-             'No video found'}
-      </td>
+      </div>
     );
   }
 }
 
-VideoTd.propTypes = {
+Video.propTypes = {
   // From parent component
   index: React.PropTypes.number.isRequired,
   // From connect
@@ -43,4 +38,4 @@ VideoTd.propTypes = {
 export default connect(
   state => ({events: state.events}),
   dispatch => bindActionCreators({playVideoAtIndex}, dispatch),
-)(VideoTd);
+)(Video);
