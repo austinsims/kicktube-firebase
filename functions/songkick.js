@@ -5,9 +5,9 @@ const functions = require('firebase-functions');
 /**
  * @param {*} location Object with strings "latitude" and "longitude".
  */
-const getEventsForLocation = (location) => new Promise((resolve, reject) => {
+const getEventsForLocation = ({location, pageNum}) => new Promise((resolve, reject) => {
   return getMetroAreaId(location)
-      .then(getEventsForMetroAreaId)
+      .then(id => getEventsForMetroAreaId(id, pageNum))
       .then(events => {
         // Remove unnecessary properties, and format the date nicely.
         // TODO: Make a typedef for InternalEvent
@@ -71,11 +71,12 @@ const getMetroAreaId = location => new Promise((resolve, reject) => {
     });
 });
 
-const getEventsForMetroAreaId = id => new Promise((resolve, reject) => {
+const getEventsForMetroAreaId = (id, pageNum) => new Promise((resolve, reject) => {
   const path = `/api/3.0/metro_areas/${id}/calendar.json`;
   const eventsPerPage = functions.config().songkick.events_per_page || 10;
   const params = [
     `per_page=${eventsPerPage}`,
+    `page=${pageNum + 1}` // the songkick api is one-indexed... gross
   ];
   const onRequestFinished = (error, response, body) => {
     checkSuccessYieldingBody(response, body)

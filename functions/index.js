@@ -11,11 +11,23 @@ const youtube = require('./youtube');
  * The request must specify "latitude" and "longitude" params, both of which
  * are dobules.  Example: "/events?latitude=70.123&longitude=40.1234"
  * 
+ * Optional zero-indexed "page" param to request next pages, i.e.:
+ *   "/events?latitude=12&longitude=21&page=1"
+ * to get the second page.
+ * 
  */
 exports.events = functions.https.onRequest((req, resp) => new Promise((resolve, reject) => {
   const onResp = () => {
-    parseLatLong(req.query)
-      .then(songkick.getEventsForLocation)
+  const songkickQuery = {};
+    parsePageNum(req.query)
+      .then(pageNum => {
+        songkickQuery.pageNum = pageNum;
+        return parseLatLong(req.query);
+      })
+      .then(location => {
+        songkickQuery.location = location;
+        return songkick.getEventsForLocation(songkickQuery);
+      })
       .then(events => Promise.all(events.map(maybeAddVideo)))
       .then(events => {
         resp.status(200).send(JSON.stringify(events));
@@ -42,6 +54,22 @@ const parseLatLong = query => new Promise((resolve, reject) => {
     reject('Could not parse latitude and longitude from query :(');
   } else {
     resolve({latitude, longitude});
+  }
+});
+
+/**
+ * Parse page number from query if present, or yield default (0) if absent.
+ * @param {*} query Object maybe string "page".
+ */
+const parsePageNum = query => new Promise((resolve, reject) => {
+  if (typeof query.page !== 'string') {
+    resolve(0);
+  }
+  const pageNumber = parseInt(query.page);
+  if (!isNaN(pageNumber)) {
+    resolve(pageNumber)
+  } else {
+    reject('Bad page number param: ' + query.page);
   }
 });
 

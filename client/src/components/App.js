@@ -1,18 +1,24 @@
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {getLocation} from '../util/location'
-import {setEvents} from '../actions/events';
+import {appendEvents} from '../actions/events';
 import {updateLoadingMessage} from '../actions/loadingMessage';
 import AppBar from 'material-ui/AppBar';
-import eventsData from '../data/events';
 import Calendar from './Calendar';
+import eventsData from '../data/events';
 import LoadingMessage from './LoadingMessage';
+import RaisedButton from 'material-ui/RaisedButton';
 import React, { Component } from 'react';
 
 class App extends Component {
+  constructor() {
+    super();
+    this.lastRequestedPage = 0;
+  }
+
   componentWillMount() {
     this.props.updateLoadingMessage('Determining your location...');
-    this.props.setEvents(null);
+    this.props.appendEvents(null);
     this.requestEvents();
   }
 
@@ -22,13 +28,25 @@ class App extends Component {
         <AppBar title="Kicktube" iconElementLeft={<span></span>}/>
         <LoadingMessage />
         {this.props.events && <Calendar events={this.props.events} />}
+        {this.maybeRenderSeeMoreButton()}
       </div>
     );
   }
 
-  requestEvents() {
+  maybeRenderSeeMoreButton() {
+    if (!this.props.events) {
+      return null;
+    }
+    return (<div style={{padding: '30px 120px'}}>
+        <RaisedButton label="SEE MORE"
+                      fullWidth={true}
+                      onTouchTap={() => this.requestEvents(this.lastRequestedPage++)} />
+    </div>)
+  }
+
+  requestEvents(page = 0) {
     // TODO: Make a URL flag for this instead?
-    const debugMode = window.location.host.includes('localhost');
+    const debugMode = window.location.host === 'localhost:3000';
     let promise;
     if (debugMode) {
       promise = new Promise((resolve) => {
@@ -37,7 +55,7 @@ class App extends Component {
     } else {
       promise = new Promise((resolve, reject) => {
         getLocation()
-          .then(getUrlForLocation)
+          .then(location => getUrlForLocationAndPage(location, page))
           .then(url => {
             this.props.updateLoadingMessage('Fetching events near you...');
             return fetch(url);
@@ -50,7 +68,7 @@ class App extends Component {
 
     promise.then(events => {
       this.props.updateLoadingMessage(null);
-      this.props.setEvents(events);
+      this.props.appendEvents(events);
     })
     .catch(reason => {
       const msg = 'Unfortunately, an error occurred' + (debugMode ? ': ' + reason : ' :( ');
@@ -63,12 +81,12 @@ App.propTypes = {
   loadingMessage: React.PropTypes.string,
   events: React.PropTypes.array,
   updateLoadingMessage: React.PropTypes.func.isRequired,
-  setEvents: React.PropTypes.func.isRequired,
+  appendEvents: React.PropTypes.func.isRequired,
 }
 
 const HOST = 'https://us-central1-kicktube-87085.cloudfunctions.net';
-const getUrlForLocation = location => HOST +
-    `/events?latitude=${location.latitude}&longitude=${location.longitude}`;
+const getUrlForLocationAndPage = (location, page) => HOST +
+    `/events?latitude=${location.latitude}&longitude=${location.longitude}&page=${page}`;
 
 /**
  * Parse to JSON or reject if invalid.
@@ -94,5 +112,5 @@ const checkRespOkYieldingText = (response) => new Promise((resolve, reject) => {
 
 export default connect(
   state => ({loadingMessage: state.loadingMessage, events: state.events}),
-  dispatch => bindActionCreators({updateLoadingMessage, setEvents}, dispatch),
+  dispatch => bindActionCreators({updateLoadingMessage, appendEvents}, dispatch),
 )(App);

@@ -1,9 +1,9 @@
 /**
  * @param {?Array} events 
  */
-export function setEvents(events) {
+export function appendEvents(events) {
   return {
-    type: 'SET_EVENTS',
+    type: 'APPEND_EVENTS',
     events,
   }
 }

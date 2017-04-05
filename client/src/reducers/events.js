@@ -1,7 +1,7 @@
 export default function events(state = null, action) {
   switch (action.type) {
-    case 'SET_EVENTS':
-      return setEvents(state, action);
+    case 'APPEND_EVENTS':
+      return appendEvents(state, action);
     case 'PLAY_VIDEO_AT_INDEX':
       return playVideoAtIndex(state, action);
     case 'PLAY_NEXT_VIDEO':
@@ -16,7 +16,10 @@ export default function events(state = null, action) {
  * @param {?Array} state 
  * @param {!Object} action 
  */
-function setEvents(state, action) {
+function appendEvents(state, action) {
+  if (state && action.events) {
+    return state.concat(action.events);
+  }
   return action.events;
 }
 
