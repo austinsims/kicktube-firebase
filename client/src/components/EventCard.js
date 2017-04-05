@@ -3,6 +3,10 @@ import FlatButton from 'material-ui/FlatButton';
 import React, {Component} from 'react';
 import Video from './Video';
 
+/**
+ * Card displaying a single event, with a link to its Songkick page, the name
+ * of the venue and a video if one was found.
+ */
 class EventCard extends Component {
   render() {
     const {event} = this.props;

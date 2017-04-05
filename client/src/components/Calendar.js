@@ -1,14 +1,15 @@
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import React, {Component} from 'react';
+import Date from './Date';
 import EventCard from './EventCard';
+import React, {Component} from 'react';
 
 import {
   playVideoOfNextEventIfPresent
 } from '../actions/events';
 
 
-class EventTable extends Component {
+class Calendar extends Component {
   componentDidMount() {
     this.boundKeyDownListener = this.onKeyDown.bind(this);
     window.addEventListener('keydown', this.boundKeyDownListener);
@@ -26,15 +27,15 @@ class EventTable extends Component {
     }
   }
   render() {
+    const dates = new Set(this.props.events.map(event => event.date));
     return (
-      <div style={{padding: '15px'}}>
-        {this.props.events.map((event, index) =>
-            <EventCard event={event} key={index} index={index}/>)}
+      <div style={{padding: '0 15px'}}>
+        {[...dates].map((date, index) => <Date date={date} key={index} />)}
       </div>
     );
   }
 }
-EventTable.propTypes = {
+Calendar.propTypes = {
   playVideoOfNextEventIfPresent: React.PropTypes.func.isRequired,
 }
 
@@ -43,5 +44,5 @@ export default connect(
   dispatch => bindActionCreators({
     playVideoOfNextEventIfPresent,
   }, dispatch)
-)(EventTable);
+)(Calendar);
 

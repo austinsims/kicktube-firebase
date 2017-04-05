@@ -5,7 +5,7 @@ import {setEvents} from '../actions/events';
 import {updateLoadingMessage} from '../actions/loadingMessage';
 import AppBar from 'material-ui/AppBar';
 import eventsData from '../data/events';
-import EventTable from './EventTable';
+import Calendar from './Calendar';
 import LoadingMessage from './LoadingMessage';
 import React, { Component } from 'react';
 
@@ -21,7 +21,7 @@ class App extends Component {
       <div>
         <AppBar title="Kicktube" iconElementLeft={<span></span>}/>
         <LoadingMessage />
-        {this.props.events && <EventTable events={this.props.events} />}
+        {this.props.events && <Calendar events={this.props.events} />}
       </div>
     );
   }
