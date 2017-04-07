@@ -6,6 +6,8 @@ export default function events(state = null, action) {
       return playVideoByYoutubeId(state, action);
     case 'PLAY_NEXT_VIDEO':
       return playVideoOfNextEventIfPresent(state, action);
+    case 'STOP_VIDEO_PLAYBACK':
+      return stopVideoPlayback(state);
     default:
       return state;
   }
@@ -63,4 +65,10 @@ function playVideoOfNextEventIfPresent(state, action) {
         event.videoIsPlaying = index === indexToPlay
         return event;
       });
+}
+
+function stopVideoPlayback(state) {
+  return state ? 
+           state.map(event => ({...event, videoIsPlaying: false})) :
+           state;
 }

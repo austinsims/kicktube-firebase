@@ -25,3 +25,12 @@ export function playVideoOfNextEventIfPresent() {
     type: 'PLAY_NEXT_VIDEO',
   }
 }
+
+/**
+ * Stop video playback.
+ */
+export function stopVideoPlayback() {
+  return {
+    type: 'STOP_VIDEO_PLAYBACK',
+  }
+}

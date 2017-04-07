@@ -5,7 +5,8 @@ import EventCard from './EventCard';
 import React, {Component} from 'react';
 
 import {
-  playVideoOfNextEventIfPresent
+  playVideoOfNextEventIfPresent,
+  stopVideoPlayback,
 } from '../actions/events';
 
 
@@ -24,6 +25,8 @@ class Calendar extends Component {
       this.props.playVideoOfNextEventIfPresent();
     } else if (event.keyCode === 37 /* left arrow */) {
       // TODO
+    } else if (event.keyCode === 27 /* escape */) {
+      this.props.stopVideoPlayback();
     }
   }
   render() {
@@ -37,12 +40,14 @@ class Calendar extends Component {
 }
 Calendar.propTypes = {
   playVideoOfNextEventIfPresent: React.PropTypes.func.isRequired,
+  stopVideoPlayback: React.PropTypes.func.isRequired,
 }
 
 export default connect(
   state => ({playingVideoIndex: state.playingVideoIndex}),
   dispatch => bindActionCreators({
     playVideoOfNextEventIfPresent,
+    stopVideoPlayback,
   }, dispatch)
 )(Calendar);
 
