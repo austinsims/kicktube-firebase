@@ -2,8 +2,8 @@ export default function events(state = null, action) {
   switch (action.type) {
     case 'APPEND_EVENTS':
       return appendEvents(state, action);
-    case 'PLAY_VIDEO_AT_INDEX':
-      return playVideoAtIndex(state, action);
+    case 'PLAY_VIDEO_BY_YOUTUBE_ID':
+      return playVideoByYoutubeId(state, action);
     case 'PLAY_NEXT_VIDEO':
       return playVideoOfNextEventIfPresent(state, action);
     default:
@@ -24,14 +24,13 @@ function appendEvents(state, action) {
 }
 
 /**
- * Play the video at "index", and stop all others.
+ * Play the video with given YouTube video id, and stop all others.
  * @param {?Array} state 
  * @param {!Object} action 
  */
-function playVideoAtIndex(state, action) {
-  const indexToPlay = action.index;
-  return Array.from(state).map((event, index) => {
-    event.videoIsPlaying = index === indexToPlay;
+function playVideoByYoutubeId(state, action) {
+  return Array.from(state).map(event => {
+    event.videoIsPlaying = event.videoId === action.youtubeId;
     return event;
   });
 }

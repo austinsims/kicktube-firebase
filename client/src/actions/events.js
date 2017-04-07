@@ -8,10 +8,10 @@ export function appendEvents(events) {
   }
 }
 
-export function playVideoAtIndex(index) {
+export function playVideoByYoutubeId(youtubeId) {
   return {
-    type: 'PLAY_VIDEO_AT_INDEX',
-    index,
+    type: 'PLAY_VIDEO_BY_YOUTUBE_ID',
+    youtubeId,
   }
 }
 

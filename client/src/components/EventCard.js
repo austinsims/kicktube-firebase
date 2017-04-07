@@ -27,8 +27,7 @@ class EventCard extends Component {
     }
     return (
       <CardText>
-        <Video event={event}
-                  index={this.props.index} />
+        <Video youtubeVideoId={event.videoId}/>
       </CardText>
     );
   }
