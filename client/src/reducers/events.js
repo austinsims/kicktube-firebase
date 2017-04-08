@@ -1,15 +1,16 @@
 // @flow
 import type {Event} from '../util/typedefs';
+import {types} from '../actions/events';
 
 export default function events(state: Array<Event> = [], action: Object) {
   switch (action.type) {
-    case 'APPEND_EVENTS':
+    case types.APPEND_EVENTS:
       return appendEvents(state, action);
-    case 'PLAY_VIDEO_BY_YOUTUBE_ID':
+    case types.PLAY_VIDEO_BY_YOUTUBE_ID:
       return playVideoByYoutubeId(state, action);
-    case 'PLAY_NEXT_VIDEO':
+    case types.PLAY_NEXT_VIDEO:
       return playVideoOfNextEventIfPresent(state, action);
-    case 'STOP_VIDEO_PLAYBACK':
+    case types.STOP_VIDEO_PLAYBACK:
       return stopVideoPlayback(state);
     default:
       return state;

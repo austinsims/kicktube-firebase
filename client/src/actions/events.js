@@ -1,16 +1,23 @@
 // @flow
 import type {Event} from '../util/typedefs';
 
+export const types = {
+  APPEND_EVENTS: 'APPEND_EVENTS',
+  PLAY_VIDEO_BY_YOUTUBE_ID: 'PLAY_VIDEO_BY_YOUTUBE_ID',
+  PLAY_NEXT_VIDEO: 'PLAY_NEXT_VIDEO',
+  STOP_VIDEO_PLAYBACK: 'STOP_VIDEO_PLAYBACK',
+};
+
 export function appendEvents(events: Array<Event>) {
   return {
-    type: 'APPEND_EVENTS',
+    type: types.APPEND_EVENTS,
     events,
   }
 }
 
 export function playVideoByYoutubeId(youtubeId: string) {
   return {
-    type: 'PLAY_VIDEO_BY_YOUTUBE_ID',
+    type: types.PLAY_VIDEO_BY_YOUTUBE_ID,
     youtubeId,
   }
 }
@@ -22,7 +29,7 @@ export function playVideoByYoutubeId(youtubeId: string) {
  */
 export function playVideoOfNextEventIfPresent() {
   return {
-    type: 'PLAY_NEXT_VIDEO',
+    type: types.PLAY_NEXT_VIDEO,
   }
 }
 
@@ -31,6 +38,6 @@ export function playVideoOfNextEventIfPresent() {
  */
 export function stopVideoPlayback() {
   return {
-    type: 'STOP_VIDEO_PLAYBACK',
+    type: types.STOP_VIDEO_PLAYBACK,
   }
 }
