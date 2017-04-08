@@ -1,4 +1,6 @@
-export default function events(state = null, action) {
+// @flow
+
+export default function events(state: Array<Object> = [], action: Object) {
   switch (action.type) {
     case 'APPEND_EVENTS':
       return appendEvents(state, action);
@@ -11,7 +13,6 @@ export default function events(state = null, action) {
     default:
       return state;
   }
-  return action.events;
 }
 
 /**
