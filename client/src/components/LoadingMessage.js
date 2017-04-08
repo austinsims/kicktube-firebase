@@ -2,7 +2,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import {connect} from 'react-redux';
 import React, {Component} from 'react';
 
-class LoadingMessage extends Component {
+export class LoadingMessage extends Component {
   render() {
     if (!this.props.loadingMessage) {
       return null;

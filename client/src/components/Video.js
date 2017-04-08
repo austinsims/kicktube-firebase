@@ -8,7 +8,7 @@ import {
   playVideoOfNextEventIfPresent,
 } from '../actions/events';
 
-class Video extends Component {
+export class Video extends Component {
   render() {
     const event = this.props.events.find(event => event.videoId === this.props.youtubeVideoId);
     const opts = {

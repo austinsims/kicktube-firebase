@@ -10,6 +10,7 @@ import LoadingMessage from './LoadingMessage';
 import RaisedButton from 'material-ui/RaisedButton';
 import React, { Component } from 'react';
 
+// Export unconnected component for unit testing.
 export class App extends Component {
   constructor() {
     super();
@@ -109,6 +110,7 @@ const checkRespOkYieldingText = (response) => new Promise((resolve, reject) => {
   });
 })
 
+// Export connected component for use by index.js.
 export default connect(
   state => ({loadingMessage: state.loadingMessage, events: state.events}),
   dispatch => bindActionCreators({updateLoadingMessage, appendEvents}, dispatch),

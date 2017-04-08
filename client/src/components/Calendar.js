@@ -10,7 +10,8 @@ import {
 } from '../actions/events';
 
 
-class Calendar extends Component {
+// Export unconnected component for unit testing.
+export class Calendar extends Component {
   componentDidMount() {
     this.boundKeyDownListener = this.onKeyDown.bind(this);
     window.addEventListener('keydown', this.boundKeyDownListener);
@@ -45,6 +46,7 @@ Calendar.propTypes = {
   stopVideoPlayback: React.PropTypes.func.isRequired,
 }
 
+// Export connected component for use by parent component.
 export default connect(
   state => ({playingVideoIndex: state.playingVideoIndex}),
   dispatch => bindActionCreators({

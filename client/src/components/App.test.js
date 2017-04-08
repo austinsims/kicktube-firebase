@@ -4,7 +4,7 @@ import React from 'react';
 
 const wrapper = shallow(
   <App loadingMessage={'Loading...'}
-       events={[]}
+       events={[{displayName: 'Foo'}, {displayName: 'Bar'}]}
        updateLoadingMessage={function() {}}
        appendEvents={function() {}}/>);
 

@@ -33,4 +33,8 @@ class EventCard extends Component {
   }
 }
 
+EventCard.propTypes = {
+  event: React.PropTypes.object.isRequired,
+}
+
 export default EventCard;
