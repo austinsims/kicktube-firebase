@@ -19,10 +19,7 @@ export default function events(state = null, action) {
  * @param {!Object} action 
  */
 function appendEvents(state, action) {
-  if (state && action.events) {
-    return state.concat(action.events);
-  }
-  return action.events;
+  return state.concat(action.events);
 }
 
 /**
@@ -42,10 +39,6 @@ function playVideoByYoutubeId(state, action) {
  * @param {Object} action 
  */
 function playVideoOfNextEventIfPresent(state, action) {
-  if (!state || !state.length) {
-    return state;
-  }
-
   const currentlyPlayingVideo = state.find(event => event.videoIsPlaying);
   if (!currentlyPlayingVideo) {
     return state;
@@ -68,7 +61,5 @@ function playVideoOfNextEventIfPresent(state, action) {
 }
 
 function stopVideoPlayback(state) {
-  return state ? 
-           state.map(event => ({...event, videoIsPlaying: false})) :
-           state;
+  return state.map(event => ({...event, videoIsPlaying: false}))
 }

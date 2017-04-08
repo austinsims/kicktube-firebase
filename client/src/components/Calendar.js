@@ -39,6 +39,8 @@ class Calendar extends Component {
   }
 }
 Calendar.propTypes = {
+  // From connect
+  events: React.PropTypes.array.isRequired,
   playVideoOfNextEventIfPresent: React.PropTypes.func.isRequired,
   stopVideoPlayback: React.PropTypes.func.isRequired,
 }

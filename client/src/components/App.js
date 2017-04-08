@@ -18,7 +18,6 @@ export class App extends Component {
 
   componentWillMount() {
     this.props.updateLoadingMessage('Determining your location...');
-    this.props.appendEvents(null);
     this.requestEvents();
   }
 
@@ -27,14 +26,14 @@ export class App extends Component {
       <div>
         <AppBar title="Kicktube" iconElementLeft={<span></span>}/>
         <LoadingMessage />
-        {this.props.events && <Calendar events={this.props.events} />}
+        {<Calendar events={this.props.events} />}
         {this.maybeRenderSeeMoreButton()}
       </div>
     );
   }
 
   maybeRenderSeeMoreButton() {
-    if (!this.props.events) {
+    if (!this.props.events.length) {
       return null;
     }
     return (<div style={{padding: '30px 120px'}}>
@@ -79,7 +78,7 @@ export class App extends Component {
 
 App.propTypes = {
   loadingMessage: React.PropTypes.string,
-  events: React.PropTypes.array,
+  events: React.PropTypes.array.isRequired,
   updateLoadingMessage: React.PropTypes.func.isRequired,
   appendEvents: React.PropTypes.func.isRequired,
 }
