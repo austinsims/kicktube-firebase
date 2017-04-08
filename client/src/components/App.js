@@ -10,7 +10,7 @@ import LoadingMessage from './LoadingMessage';
 import RaisedButton from 'material-ui/RaisedButton';
 import React, { Component } from 'react';
 
-class App extends Component {
+export class App extends Component {
   constructor() {
     super();
     this.lastRequestedPage = 0;
