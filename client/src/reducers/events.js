@@ -25,10 +25,10 @@ function appendEvents(state: Array<Event>, action: Object) {
  * Play the video with given YouTube video id, and stop all others.
  */
 function playVideoByYoutubeId(state: Array<Event>, action: Object) {
-  return Array.from(state).map(event => {
-    event.videoIsPlaying = event.videoId === action.youtubeId;
-    return event;
-  });
+  return state.map(event => ({
+    ...event,
+    videoIsPlaying: event.videoId === action.youtubeId
+  }));
 }
 
 function playVideoOfNextEventIfPresent(state: Array<Event>, action: Object) {
@@ -42,17 +42,16 @@ function playVideoOfNextEventIfPresent(state: Array<Event>, action: Object) {
   const nextEventWithVideo = state.find(
       (event, index) => !!event.videoId && index > currentlyPlayingIndex);
   if (!nextEventWithVideo) {
-    return state;
+    return state.map(event => ({...event, videoIsPlaying: false}));
   }
 
   const indexToPlay = state.indexOf(nextEventWithVideo);
-  return Array.from(state)
-      .map((event, index) => {
-        event.videoIsPlaying = index === indexToPlay
-        return event;
-      });
+  return state.map((event, index) => ({
+    ...event,
+    videoIsPlaying: index === indexToPlay,
+  }));
 }
 
 function stopVideoPlayback(state: Array<Event>) {
-  return state.map(event => ({...event, videoIsPlaying: false}))
+  return state.map(event => ({...event, videoIsPlaying: false}));
 }
