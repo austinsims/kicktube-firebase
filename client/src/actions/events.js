@@ -1,14 +1,14 @@
-/**
- * @param {?Array} events 
- */
-export function appendEvents(events) {
+// @flow
+import type {Event} from '../util/typedefs';
+
+export function appendEvents(events: Array<Event>) {
   return {
     type: 'APPEND_EVENTS',
     events,
   }
 }
 
-export function playVideoByYoutubeId(youtubeId) {
+export function playVideoByYoutubeId(youtubeId: string) {
   return {
     type: 'PLAY_VIDEO_BY_YOUTUBE_ID',
     youtubeId,

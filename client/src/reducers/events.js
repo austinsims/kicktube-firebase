@@ -1,6 +1,7 @@
 // @flow
+import type {Event} from '../util/typedefs';
 
-export default function events(state: Array<Object> = [], action: Object) {
+export default function events(state: Array<Event> = [], action: Object) {
   switch (action.type) {
     case 'APPEND_EVENTS':
       return appendEvents(state, action);
@@ -15,31 +16,21 @@ export default function events(state: Array<Object> = [], action: Object) {
   }
 }
 
-/**
- * @param {?Array} state 
- * @param {!Object} action 
- */
-function appendEvents(state, action) {
+function appendEvents(state: Array<Event>, action: Object) {
   return state.concat(action.events);
 }
 
 /**
  * Play the video with given YouTube video id, and stop all others.
- * @param {?Array} state 
- * @param {!Object} action 
  */
-function playVideoByYoutubeId(state, action) {
+function playVideoByYoutubeId(state: Array<Event>, action: Object) {
   return Array.from(state).map(event => {
     event.videoIsPlaying = event.videoId === action.youtubeId;
     return event;
   });
 }
 
-/**
- * @param {?Array} state 
- * @param {Object} action 
- */
-function playVideoOfNextEventIfPresent(state, action) {
+function playVideoOfNextEventIfPresent(state: Array<Event>, action: Object) {
   const currentlyPlayingVideo = state.find(event => event.videoIsPlaying);
   if (!currentlyPlayingVideo) {
     return state;
@@ -61,6 +52,6 @@ function playVideoOfNextEventIfPresent(state, action) {
       });
 }
 
-function stopVideoPlayback(state) {
+function stopVideoPlayback(state: Array<Event>) {
   return state.map(event => ({...event, videoIsPlaying: false}))
 }
