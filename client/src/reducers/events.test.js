@@ -1,6 +1,6 @@
 import events from './events';
-import {types} from '../actions/events';
 import {
+  types,
   appendEvents,
   playVideoByYoutubeId,
   playVideoOfNextEventIfPresent,

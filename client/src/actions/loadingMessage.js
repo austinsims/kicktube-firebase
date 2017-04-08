@@ -1,9 +1,12 @@
-/**
- * @param {?string} message 
- */
-export function updateLoadingMessage(message) {
+// @flow
+
+export const types = {
+  UPDATE_LOADING_MESSAGE: 'UPDATE_LOADING_MESSAGE',
+};
+
+export function updateLoadingMessage(message: string) {
   return {
-    type: 'UPDATE_LOADING_MESSAGE',
+    type: types.UPDATE_LOADING_MESSAGE,
     message,
-  }
+  };
 }

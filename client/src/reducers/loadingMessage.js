@@ -1,8 +1,6 @@
-/**
- * @param {?string} state 
- * @param {!Object} action 
- */
-export default function loadingMessage(state = '', action) {
+// @flow
+
+export default function loadingMessage(state: string = '', action: Object) {
   if (action.type !== 'UPDATE_LOADING_MESSAGE') {
     return state;
   }
