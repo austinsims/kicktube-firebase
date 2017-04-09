@@ -1,3 +1,5 @@
+// @flow
+
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {getLocation} from '../util/location'
@@ -10,8 +12,18 @@ import LoadingMessage from './LoadingMessage';
 import RaisedButton from 'material-ui/RaisedButton';
 import React, { Component } from 'react';
 
+import type {SongkickEvent} from '../util/typedefs';
+
 // Export unconnected component for unit testing.
 export class App extends Component {
+  props: {
+    loadingMessage: string,
+    events: Array<SongkickEvent>,
+    updateLoadingMessage: Function,
+    appendEvents: Function,
+  };
+  lastRequestedPage: number;
+
   constructor() {
     super();
     this.lastRequestedPage = 0;
@@ -44,7 +56,7 @@ export class App extends Component {
     </div>)
   }
 
-  requestEvents(page = 0) {
+  requestEvents(page: number = 0) {
     // TODO: Make a URL flag for this instead?
     const debugMode = window.location.host === 'localhost:3000';
     let promise;
@@ -67,7 +79,7 @@ export class App extends Component {
     }
 
     promise.then(events => {
-      this.props.updateLoadingMessage(null);
+      this.props.updateLoadingMessage('');
       this.props.appendEvents(events);
     })
     .catch(reason => {
@@ -75,13 +87,6 @@ export class App extends Component {
       this.props.updateLoadingMessage(msg);
     });
   }
-}
-
-App.propTypes = {
-  loadingMessage: React.PropTypes.string,
-  events: React.PropTypes.array.isRequired,
-  updateLoadingMessage: React.PropTypes.func.isRequired,
-  appendEvents: React.PropTypes.func.isRequired,
 }
 
 const HOST = 'https://us-central1-kicktube-87085.cloudfunctions.net';

@@ -5,6 +5,7 @@
   "dependencies": {
     "enzyme": "^2.8.0",
     "material-ui": "^0.17.1",
+    "prop-types": "^15.5.6",
     "react": "^15.4.2",
     "react-addons-test-utils": "^15.5.0",
     "react-dom": "^15.4.2",
@@ -20,6 +21,7 @@
     "babel-eslint": "7.1.1",
     "babel-jest": "18.0.0",
     "babel-loader": "6.2.10",
+    "babel-plugin-flow-react-proptypes": "^1.0.0",
     "babel-preset-flow": "^6.23.0",
     "babel-preset-react-app": "^2.2.0",
     "babel-runtime": "^6.20.0",
@@ -90,6 +92,9 @@
     "presets": [
       "react-app",
       "flow"
+    ],
+    "plugins": [
+      "flow-react-proptypes"
     ]
   },
   "eslintConfig": {

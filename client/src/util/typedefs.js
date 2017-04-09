@@ -1,14 +1,14 @@
 // @flow
 
 export type SongkickEvent = {
-  videoIsPlaying: boolean,
+  videoIsPlaying: ?boolean,
   displayName: string,
   venue: Venue,
   uri: string,
   performance: Array<Performance>,
   date: string,
   /** YouTube video ID. */
-  videoId: string,
+  videoId: ?string,
 };
 
 export type Venue = {

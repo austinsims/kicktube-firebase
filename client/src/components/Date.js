@@ -1,8 +1,20 @@
+// @flow
+
 import React, {Component} from 'react';
 import EventCard from './EventCard';
 import {connect} from 'react-redux';
 
+import type {SongkickEvent} from '../util/typedefs';
+
 class Date extends Component {
+  props: {
+    // The date this component should show events for, represented the same as
+    // in the API response as a string.
+    date: string,
+    // From connect
+    events: Array<SongkickEvent>,
+  };
+
   render() {
     return (<div>
       <h2 style={{
@@ -18,12 +30,5 @@ class Date extends Component {
   }
 }
 
-Date.propTypes = {
-  // The date this component should show events for, represented the same as
-  // in the API response as a string.
-  date: React.PropTypes.string.isRequired,
-  // From connect
-  events: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
-}
 
 export default connect(state => ({events: state.events}))(Date);

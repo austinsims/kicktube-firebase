@@ -1,8 +1,14 @@
+// @flow
+
 import CircularProgress from 'material-ui/CircularProgress';
 import {connect} from 'react-redux';
 import React, {Component} from 'react';
 
 export class LoadingMessage extends Component {
+  props: {
+    loadingMessage: string,
+  };
+
   render() {
     if (!this.props.loadingMessage) {
       return null;
@@ -23,10 +29,6 @@ export class LoadingMessage extends Component {
         }}>{this.props.loadingMessage}</div>
     </div>)
   }
-}
-
-LoadingMessage.propTypes = {
-  loadingMessage: React.PropTypes.string,
 }
 
 export default connect(state => ({

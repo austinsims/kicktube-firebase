@@ -1,13 +1,21 @@
+// @flow
+
 import {Card, CardHeader, CardText, CardActions, CardMedia, CardTitle} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import React, {Component} from 'react';
 import Video from './Video';
+
+import type {SongkickEvent} from '../util/typedefs';
 
 /**
  * Card displaying a single event, with a link to its Songkick page, the name
  * of the venue and a video if one was found.
  */
 class EventCard extends Component {
+  props: {
+    event: SongkickEvent,
+  };
+
   render() {
     const {event} = this.props;
     return (
@@ -31,10 +39,6 @@ class EventCard extends Component {
       </CardText>
     );
   }
-}
-
-EventCard.propTypes = {
-  event: React.PropTypes.object.isRequired,
 }
 
 export default EventCard;

@@ -1,8 +1,12 @@
+// @flow
+
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import Date from './Date';
 import EventCard from './EventCard';
 import React, {Component} from 'react';
+
+import type {SongkickEvent} from '../util/typedefs';
 
 import {
   playVideoOfNextEventIfPresent,
@@ -12,6 +16,13 @@ import {
 
 // Export unconnected component for unit testing.
 export class Calendar extends Component {
+  props: {
+    events: Array<SongkickEvent>,
+    playVideoOfNextEventIfPresent: Function,
+    stopVideoPlayback: Function,
+  };
+  boundKeyDownListener: ?Function;
+
   componentDidMount() {
     this.boundKeyDownListener = this.onKeyDown.bind(this);
     window.addEventListener('keydown', this.boundKeyDownListener);
@@ -21,7 +32,7 @@ export class Calendar extends Component {
       window.removeEventListener('keydown', this.boundKeyDownListener);
     }
   }
-  onKeyDown(event) {
+  onKeyDown(event: Event) {
     if (event.keyCode === 39 /* right arrow */) {
       this.props.playVideoOfNextEventIfPresent();
     } else if (event.keyCode === 37 /* left arrow */) {
@@ -38,12 +49,6 @@ export class Calendar extends Component {
       </div>
     );
   }
-}
-Calendar.propTypes = {
-  // From connect
-  events: React.PropTypes.array.isRequired,
-  playVideoOfNextEventIfPresent: React.PropTypes.func.isRequired,
-  stopVideoPlayback: React.PropTypes.func.isRequired,
 }
 
 // Export connected component for use by parent component.
