@@ -1,5 +1,5 @@
 // @flow
-import type {Event} from '../util/typedefs';
+import type {SongkickEvent} from '../util/typedefs';
 
 export const types = {
   APPEND_EVENTS: 'APPEND_EVENTS',
@@ -8,7 +8,7 @@ export const types = {
   STOP_VIDEO_PLAYBACK: 'STOP_VIDEO_PLAYBACK',
 };
 
-export function appendEvents(events: Array<Event>) {
+export function appendEvents(events: Array<SongkickEvent>) {
   return {
     type: types.APPEND_EVENTS,
     events,

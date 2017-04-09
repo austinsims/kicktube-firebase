@@ -1,6 +1,6 @@
 // @flow
 
-export type Event = {
+export type SongkickEvent = {
   videoIsPlaying: boolean,
   displayName: string,
   venue: Venue,
