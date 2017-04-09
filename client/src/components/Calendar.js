@@ -6,7 +6,7 @@ import Date from './Date';
 import EventCard from './EventCard';
 import React, {Component} from 'react';
 
-import type {SongkickEvent} from '../util/typedefs';
+import type {EventsState} from '../util/typedefs';
 
 import {
   playVideoOfNextEventIfPresent,
@@ -17,7 +17,7 @@ import {
 // Export unconnected component for unit testing.
 export class Calendar extends Component {
   props: {
-    events: Array<SongkickEvent>,
+    events: EventsState,
     playVideoOfNextEventIfPresent: Function,
     stopVideoPlayback: Function,
   };
@@ -42,7 +42,7 @@ export class Calendar extends Component {
     }
   }
   render() {
-    const dates = new Set(this.props.events.map(event => event.date));
+    const dates = new Set(this.props.events.items.map(event => event.date));
     return (
       <div style={{padding: '0 15px'}}>
         {[...dates].map((date, index) => <Date date={date} key={index} />)}

@@ -1,12 +1,20 @@
 import {Calendar} from './Calendar';
 import {shallow} from 'enzyme';
 import React from 'react';
-import {makeEvent} from '../util/testUtils';
 
-const events = [
+import {
+  makeEvent,
+  makeEventsState,
+  failTestOnPropTypeFailure
+} from '../util/testUtils';
+
+failTestOnPropTypeFailure();
+
+const items = [
   makeEvent({displayName: 'Foo'}),
   makeEvent({displayName: 'Bar'})
 ];
+const events = makeEventsState({items});
 
 const wrapper = shallow(
   <Calendar events={events}

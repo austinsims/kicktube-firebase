@@ -61,3 +61,8 @@ export type ArtistIdentifier = {
    */
   href: string,
 };
+
+export type EventsState = {
+  items: Array<SongkickEvent>,
+  isFetching: boolean,
+};

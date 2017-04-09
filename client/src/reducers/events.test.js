@@ -1,4 +1,5 @@
 import events from './events';
+import {makeEventsState} from '../util/testUtils';
 import {
   types,
   appendEvents,
@@ -11,11 +12,12 @@ describe("events reducer", () => {
 
   describe(`handles ${types.APPEND_EVENTS} actions`, () => {
     test("appends events", () => {
-      const initialState = [{displayName: 'Regina Spektor'}];
+      const initialItems = [{displayName: 'Regina Spektor'}];
+      const initialState = makeEventsState({items: initialItems});
       const action = appendEvents([{displayName: 'Radiohead'}]);
-      const expectedState = [
-        {displayName: 'Regina Spektor'},
-        {displayName: 'Radiohead'}];
+      const expectedItems =
+          [{displayName: 'Regina Spektor'}, {displayName: 'Radiohead'}]
+      const expectedState = makeEventsState({items: expectedItems});
       expect(events(initialState, action)).toEqual(expectedState);
     });
   });
@@ -23,19 +25,22 @@ describe("events reducer", () => {
   describe(`handles ${types.PLAY_VIDEO_BY_YOUTUBE_ID} actions`, () => {
 
     test("plays the video with the given id", () => {
-      const initialState = [notPlayingEvent];
+      const initialItems = [notPlayingEvent];
+      const initialState = makeEventsState({items: initialItems});
       const action = playVideoByYoutubeId('not-playing');
-      const expectedState = [{...notPlayingEvent, videoIsPlaying: true}];
+      const expectedItems = [{...notPlayingEvent, videoIsPlaying: true}];
+      const expectedState = makeEventsState({items: expectedItems});
       expect(events(initialState, action)).toEqual(expectedState);
     });
 
     test("stops other videos", () => {
-      const initialState = [playingEvent, notPlayingEvent];
+      const initialItems = [playingEvent, notPlayingEvent];
+      const initialState = makeEventsState({items: initialItems});
       const action = playVideoByYoutubeId('not-playing');
-      const expectedState = [
+      const expectedItems = [
         {...playingEvent, videoIsPlaying: false},
-        {...notPlayingEvent, videoIsPlaying: true},
-      ];
+        {...notPlayingEvent, videoIsPlaying: true}];
+      const expectedState = makeEventsState({items: expectedItems});
       expect(events(initialState, action)).toEqual(expectedState);
     });
 
@@ -43,40 +48,48 @@ describe("events reducer", () => {
 
   describe(`handles ${types.PLAY_NEXT_VIDEO} actions`, () => {
     test("plays the next video, if there is one", () => {
-      const initialState = [playingEvent, notPlayingEvent];
+      const initialItems = [playingEvent, notPlayingEvent];
+      const initialState = makeEventsState({items: initialItems});
       const action = playVideoOfNextEventIfPresent();
-      const expectedState = [
+      const expectedItems = [
         {...playingEvent, videoIsPlaying: false},
         {...notPlayingEvent, videoIsPlaying: true},
       ];
+      const expectedState = makeEventsState({items: expectedItems});
       expect(events(initialState, action)).toEqual(expectedState);
     });
 
     test("does nothing when playing next video, if none playing", () => {
-      const initialState = [notPlayingEvent, anotherNotPlayingEvent];
+      const initialItems = [notPlayingEvent, anotherNotPlayingEvent];
+      const initialState = makeEventsState({items: initialItems});
       const action = playVideoOfNextEventIfPresent();
       const expectedState = initialState;
       expect(events(initialState, action)).toEqual(expectedState);
     });
 
     test("skips over an event without a video when playing next video", () => {
-      const initialState = [playingEvent, eventWithNoVideo, notPlayingEvent];
+      const initialItems = [playingEvent, eventWithNoVideo, notPlayingEvent];
+      const initialState = makeEventsState({items: initialItems});
       const action = playVideoOfNextEventIfPresent();
-      const expectedState = [
+      const expectedItems = [
         {...playingEvent, videoIsPlaying: false},
         eventWithNoVideo,
         {...notPlayingEvent, videoIsPlaying: true},
       ];
+      const expectedState = makeEventsState({items: expectedItems});
       expect(events(initialState, action)).toEqual(expectedState);
     });
 
     test("stops playback when trying to play next after last video", () => {
-      const initialState = [notPlayingEvent, playingEvent];
+      const initialItems = [notPlayingEvent, playingEvent];
+      const initialState = makeEventsState({items: initialItems});
       const action = playVideoOfNextEventIfPresent();
-      const expectedState = [
+      const expectedItems = [
         notPlayingEvent,
         {...playingEvent, videoIsPlaying: false},
       ];
+      const expectedState = makeEventsState({items: expectedItems});
+      // if (typeof events(initialState, action).isFetching !== 'boolean') throw new Error(Object.keys(events(initialState, action))); // DO NOT SUBMIT
       expect(events(initialState, action)).toEqual(expectedState);
     });
 
@@ -85,9 +98,11 @@ describe("events reducer", () => {
   describe(`handles ${types.STOP_VIDEO_PLAYBACK} actions`, () => {
 
     test("stops playback", () => {
-      const initialState = [playingEvent];
+      const initialItems = [playingEvent];
+      const initialState = makeEventsState({items: initialItems});
       const action = stopVideoPlayback();
-      const expectedState = [{...playingEvent, videoIsPlaying: false}];
+      const expectedItems = [{...playingEvent, videoIsPlaying: false}];
+      const expectedState = makeEventsState({items: expectedItems});
       expect(events(initialState, action)).toEqual(expectedState);
     });
 

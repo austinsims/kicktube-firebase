@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import React, {Component} from 'react';
 import YouTube from 'react-youtube';
 
-import type {SongkickEvent} from '../util/typedefs';
+import type {EventsState} from '../util/typedefs';
 
 import {
   playVideoByYoutubeId,
@@ -19,13 +19,15 @@ export class Video extends Component {
     // From connect
     playVideoByYoutubeId: Function,
     playVideoOfNextEventIfPresent: Function,
-    events: Array<SongkickEvent>,
+    events: EventsState,
   };
 
   render() {
-    const event = this.props.events.find(event => event.videoId === this.props.youtubeVideoId);
+    const event = this.props.events.items.find(
+        event => event.videoId === this.props.youtubeVideoId);
     if (!event) {
-      throw new Error('Video component could not find event for id: ' + this.props.youtubeVideoId);
+      throw new Error('Video component could not find event for id: ' +
+          this.props.youtubeVideoId);
     }
 
     const opts = {

@@ -12,13 +12,13 @@ import LoadingMessage from './LoadingMessage';
 import RaisedButton from 'material-ui/RaisedButton';
 import React, { Component } from 'react';
 
-import type {SongkickEvent} from '../util/typedefs';
+import type {EventsState} from '../util/typedefs';
 
 // Export unconnected component for unit testing.
 export class App extends Component {
   props: {
     loadingMessage: string,
-    events: Array<SongkickEvent>,
+    events: EventsState,
     updateLoadingMessage: Function,
     appendEvents: Function,
   };

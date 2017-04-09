@@ -1,13 +1,20 @@
 import {Video} from './Video';
 import {shallow} from 'enzyme';
 import React from 'react';
-import {makeEvent} from '../util/testUtils';
+import {
+  makeEvent,
+  makeEventsState,
+  failTestOnPropTypeFailure,
+} from '../util/testUtils';
 
-const events = [makeEvent({
+failTestOnPropTypeFailure();
+
+const items = [makeEvent({
   displayName: 'FizzBuzz at Magic Castle',
   videoIsPlaying: false,
   videoId: '0xDEADBEEF',
 })];
+const events = makeEventsState({items});
 
 it('renders without crashing', () => {
   const wrapper = shallow(

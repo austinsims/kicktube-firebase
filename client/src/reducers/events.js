@@ -1,8 +1,10 @@
 // @flow
-import type {SongkickEvent} from '../util/typedefs';
+import type {EventsState} from '../util/typedefs';
 import {types} from '../actions/events';
 
-export default function events(state: Array<SongkickEvent> = [], action: Object) {
+export const defaultEventsState = {items: [], isFetching: false};
+
+export default function events(state: EventsState = defaultEventsState, action: Object): EventsState {
   switch (action.type) {
     case types.APPEND_EVENTS:
       return appendEvents(state, action);
@@ -17,41 +19,51 @@ export default function events(state: Array<SongkickEvent> = [], action: Object)
   }
 }
 
-function appendEvents(state: Array<SongkickEvent>, action: Object) {
-  return state.concat(action.events);
+function appendEvents(state: EventsState, action: Object): EventsState {
+  return {
+    ...state,
+    items: state.items.concat(action.events),
+  };
 }
 
 /**
  * Play the video with given YouTube video id, and stop all others.
  */
-function playVideoByYoutubeId(state: Array<SongkickEvent>, action: Object) {
-  return state.map(event => ({
-    ...event,
-    videoIsPlaying: event.videoId === action.youtubeId
-  }));
+function playVideoByYoutubeId(state: EventsState, action: Object): EventsState {
+  const items = state.items.map(event => ({
+      ...event,
+      videoIsPlaying: event.videoId === action.youtubeId}));
+  return {
+    ...state,
+    items,
+  };
 }
 
-function playVideoOfNextEventIfPresent(state: Array<SongkickEvent>, action: Object) {
-  const currentlyPlayingVideo = state.find(event => event.videoIsPlaying);
+function playVideoOfNextEventIfPresent(state: EventsState, action: Object): EventsState {
+  const currentlyPlayingVideo = state.items.find(event => event.videoIsPlaying);
   if (!currentlyPlayingVideo) {
     return state;
   }
 
   // TODO: Polyfill and use Array.prototype.indexOf
-  const currentlyPlayingIndex = state.indexOf(currentlyPlayingVideo);
-  const nextEventWithVideo = state.find(
+  const currentlyPlayingIndex = state.items.indexOf(currentlyPlayingVideo);
+  const nextEventWithVideo = state.items.find(
       (event, index) => !!event.videoId && index > currentlyPlayingIndex);
   if (!nextEventWithVideo) {
-    return state.map(event => ({...event, videoIsPlaying: false}));
+    const items = state.items.map(event => ({...event, videoIsPlaying: false}));
+    return {...state, items};
   }
 
-  const indexToPlay = state.indexOf(nextEventWithVideo);
-  return state.map((event, index) => ({
+  const indexToPlay = state.items.indexOf(nextEventWithVideo);
+  const items = state.items.map((event, index) => ({
     ...event,
     videoIsPlaying: index === indexToPlay,
   }));
+
+  return {...state, items};
 }
 
-function stopVideoPlayback(state: Array<SongkickEvent>) {
-  return state.map(event => ({...event, videoIsPlaying: false}));
+function stopVideoPlayback(state: EventsState): EventsState {
+  const items = state.items.map(event => ({...event, videoIsPlaying: false}));
+  return {...state, items};
 }

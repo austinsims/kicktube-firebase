@@ -44,3 +44,18 @@ export function makeEvent(opts = {}) {
     videoId: opts.videoId || '0xDEADBEEF',
   };
 }
+
+export function makeEventsState(opts = {}) {
+  return {
+    items: opts.items || [makeEvent()],
+    isFetching: typeof opts.isFetching === 'boolean' ? opts.isFetching : false,
+  };
+}
+
+export function failTestOnPropTypeFailure() {
+  console.error = function(message) {
+    if (message.indexOf('Failed prop type') >= 0) {
+      throw new Error(message);
+    }
+  };
+}

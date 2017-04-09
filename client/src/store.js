@@ -1,12 +1,10 @@
-import {createStore, compose} from 'redux';
+import {createStore} from 'redux';
 import rootReducer from './reducers/index';
-
-const loadingMessage = '';
-const events = [];
+import {defaultEventsState} from './reducers/events';
 
 const defaultState = {
-  loadingMessage,
-  events,
+  loadingMessage: '',
+  events: defaultEventsState,
 };
 
 const store = createStore(rootReducer, defaultState);
