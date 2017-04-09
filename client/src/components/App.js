@@ -46,7 +46,7 @@ export class App extends Component {
   }
 
   maybeRenderSeeMoreButton() {
-    if (!this.props.events.length) {
+    if (!this.props.events.items.length) {
       return null;
     }
     return (<div style={{padding: '30px 120px'}}>
