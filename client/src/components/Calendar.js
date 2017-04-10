@@ -53,7 +53,7 @@ export class Calendar extends Component {
 
 // Export connected component for use by parent component.
 export default connect(
-  state => ({playingVideoIndex: state.playingVideoIndex}),
+  state => ({events: state.events}),
   dispatch => bindActionCreators({
     playVideoOfNextEventIfPresent,
     stopVideoPlayback,
