@@ -6,6 +6,8 @@ import {
   playVideoByYoutubeId,
   playVideoOfNextEventIfPresent,
   stopVideoPlayback,
+  requestEvents,
+  receiveEvents,
 } from '../actions/events';
 
 describe("events reducer", () => {
@@ -106,6 +108,35 @@ describe("events reducer", () => {
       expect(events(initialState, action)).toEqual(expectedState);
     });
 
+  });
+
+  describe(`handles ${types.REQUEST_EVENTS} actions`, () => {
+    test("sets isFetching to true", () => {
+      const initialState = makeEventsState({isFetching: false});
+      const action = requestEvents(0);
+      const expectedState = makeEventsState({isFetching: true});
+      expect(events(initialState, action)).toEqual(expectedState);
+    });
+  });
+
+  describe(`handles ${types.RECEIVE_EVENTS} actions`, () => {
+    test("sets isFetching to false and merges in new events", () => {
+      const one = {displayName: 'One'};
+      const two = {displayName: 'Two'};
+      const three = {displayName: 'Three'};
+      const four = {displayName: 'Four'};
+
+      const initialItems = [one, two];
+      const initialState =
+          makeEventsState({isFetching: true, items: initialItems});
+
+      const action = receiveEvents([three, four]);
+      const expectedItems = [one, two, three, four];
+      const expectedState =
+          makeEventsState({isFetching: false, items: expectedItems});
+
+      expect(events(initialState, action)).toEqual(expectedState);
+    });
   });
 });
 

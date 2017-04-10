@@ -14,16 +14,29 @@ export default function events(state: EventsState = defaultEventsState, action: 
       return playVideoOfNextEventIfPresent(state, action);
     case types.STOP_VIDEO_PLAYBACK:
       return stopVideoPlayback(state);
+    case types.REQUEST_EVENTS:
+      return requestEvents(state, action);
+    case types.RECEIVE_EVENTS:
+      return receiveEvents(state, action);
     default:
       return state;
   }
 }
 
+// TODO: Delete.
 function appendEvents(state: EventsState, action: Object): EventsState {
   return {
     ...state,
     items: state.items.concat(action.events),
   };
+}
+
+function requestEvents(state: EventsState, action: Object): EventsState {
+  return {...state, isFetching: true};
+}
+
+function receiveEvents(state: EventsState, action: Object): EventsState {
+  return {...state, isFetching: false, items: state.items.concat(action.items)};
 }
 
 /**

@@ -66,3 +66,8 @@ export type EventsState = {
   items: Array<SongkickEvent>,
   isFetching: boolean,
 };
+
+export type Location = {
+  latitude: number,
+  longitude: number,
+};

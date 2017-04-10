@@ -17,10 +17,8 @@ const items = [
 const events = makeEventsState({items});
 
 const wrapper = shallow(
-  <App loadingMessage={'Loading...'}
-       events={events}
-       updateLoadingMessage={function() {}}
-       appendEvents={function() {}}/>);
+  <App events={events}
+       fetchEvents={function() {}}/>);
 
 it('renders without crashing', () => {
   expect(wrapper).toHaveLength(1);
