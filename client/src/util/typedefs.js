@@ -72,3 +72,10 @@ export type Location = {
   latitude: number,
   longitude: number,
 };
+
+export type FirebaseUser = {
+  displayName: ?string,
+  email: ?string,
+  photoURL: ?string,
+  uid: ?string,
+}
