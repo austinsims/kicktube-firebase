@@ -17,6 +17,7 @@ const getEventsForLocation = ({location, pageNum}) => new Promise((resolve, reje
           uri: event.uri,
           performance: event.performance,
           date: moment(event.start.date, 'YYYY-MM-DD').format('dddd, MMMM Do'),
+          id: event.id,
         }));
         resolve(internalEvents);
       })

@@ -11,6 +11,7 @@ import thunkMiddleware from 'redux-thunk';
 const defaultState = {
   loadingMessage: '',
   events: defaultEventsState,
+  dislikedEventsById: [],
 };
 
 const store =

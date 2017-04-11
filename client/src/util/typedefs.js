@@ -9,6 +9,7 @@ export type SongkickEvent = {
   date: string,
   /** YouTube video ID. */
   videoId: ?string,
+  id: number,
 };
 
 export type Venue = {

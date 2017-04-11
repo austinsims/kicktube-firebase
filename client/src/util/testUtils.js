@@ -42,6 +42,7 @@ export function makeEvent(opts = {}) {
     performance: opts.performance || defaultPerformance,
     date: opts.date || 'Sunday, March 5 2049',
     videoId: opts.videoId || '0xDEADBEEF',
+    id: typeof opts.id === 'number' ? opts.id : 0,
   };
 }
 

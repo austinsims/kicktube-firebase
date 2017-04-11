@@ -23,7 +23,7 @@ export class Date extends Component {
         }}>{this.props.date}</h2>
       {this.props.events.items
           .filter(event => event.date === this.props.date)
-          .map((event, index) => <EventCard event={event}
+          .map((event, index) => <EventCard eventId={event.id}
                                             key={index}
                                             index={index}/>)}
     </div>);
