@@ -2,6 +2,7 @@
 
 import {connect} from 'react-redux';
 import AppBar from 'material-ui/AppBar';
+import Avatar from 'material-ui/Avatar';
 import firebase from 'firebase';
 import FlatButton from 'material-ui/FlatButton';
 import React, {Component} from 'react';
@@ -16,9 +17,11 @@ export class KicktubeAppBar extends Component {
   }
 
   renderLoginStuff() {
-    if (this.props.user) {
-      // TODO(adsims): Show avatar and logout link.
-      return (<span>Welcome, {this.props.user.displayName}</span>);
+    const {user} = this.props;
+    if (user) {
+      return user.photoURL ?
+          <Avatar src={user.photoURL} size={48} /> :
+          <span>Welcome, {this.props.user.displayName}</span>;
     } else {
       return (
         <FlatButton label="LOGIN" onTouchTap={() => this.signIn()}/>
