@@ -77,5 +77,5 @@ export type FirebaseUser = {
   displayName: ?string,
   email: ?string,
   photoURL: ?string,
-  uid: ?string,
+  uid: string,
 }
