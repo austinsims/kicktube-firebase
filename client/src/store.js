@@ -8,10 +8,10 @@ import {getLocation} from './util/location'
 import {setUser} from './actions/user';
 import {updateLoadingMessage} from './actions/loadingMessage'
 import arrayEqual from 'array-equal'
-import firebase from 'firebase';
 import rootReducer from './reducers/index';
 import thunkMiddleware from 'redux-thunk';
 import type {FirebaseUser} from './util/typedefs';
+import firebaseApp from './util/firebaseApp';
 
 const defaultState = {
   loadingMessage: '',
@@ -32,16 +32,6 @@ getLocation().then(location => {
   store.dispatch(updateLoadingMessage('Fetching events near you...'));
   store.dispatch(fetchEvents(location, 0)); 
 });
-
-const firebaseCongig = {
-  apiKey: "AIzaSyBy7TfxbQsSeRUanBL6L_-IqWvzLXVkKzU",
-  authDomain: "kicktube-87085.firebaseapp.com",
-  databaseURL: "https://kicktube-87085.firebaseio.com",
-  projectId: "kicktube-87085",
-  storageBucket: "kicktube-87085.appspot.com",
-  messagingSenderId: "1041672798109"
-};
-firebase.initializeApp(firebaseCongig);
 
 function onProfile(snapshot) {
   const val = snapshot.val();
@@ -71,16 +61,16 @@ function onProfile(snapshot) {
     const data = {};
     dislikedEventIds.forEach(id => data[String(id)] = true);
     console.log('data: ' + JSON.stringify(data));
-    firebase.database().ref(`profile/${user.uid}`)
+    firebaseApp.database().ref(`profile/${user.uid}`)
         .child('dislikedEventsById')
         .set(data);
   });
 }
 
-firebase.auth().onAuthStateChanged((user: FirebaseUser) => {
+firebaseApp.auth().onAuthStateChanged((user: FirebaseUser) => {
   store.dispatch(setUser(user));
   // When user logs in, get a one-time snapshot of their profile.
-  firebase.database().ref(`profile/${user.uid}`)
+  firebaseApp.database().ref(`profile/${user.uid}`)
       .once('value')
       .then(onProfile);
 });

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "bluebird": "^3.5.0",
     "enzyme": "^2.8.0",
     "firebase": "^3.7.5",
     "material-ui": "^0.17.1",
