@@ -31,7 +31,7 @@ export class EventCard extends Component {
     return (
       <Card containerStyle={{margin: '15px'}}>
         <CardHeader
-          title={<a href={event.uri}>{event.displayName}</a>} 
+          title={<a href={event.uri} target="_blank">{event.displayName}</a>} 
           subtitle={event.venue.displayName}/>
           {this.maybeRenderCardText()}
           {this.maybeRenderCardActions()}
