@@ -18,7 +18,13 @@ const getFirstVideoForQuery = query => new Promise((resolve, reject) => {
            '(https://firebase.google.com/docs/functions/config-env)');
     return;
   }
-  const opts = {key: apiKey, part: 'snippet', q: query};
+  const opts = {
+    key: apiKey,
+    part: 'snippet',
+    q: query,
+    type: 'video',
+    videoCategoryId: 10, // restrict to  Music category
+  };
   const onResult = (err, res) => {
     if (err) {
       // TODO: Consider just dropping this query if it fails. Don't want to
