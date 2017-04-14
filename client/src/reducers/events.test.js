@@ -121,10 +121,10 @@ describe("events reducer", () => {
 
   describe(`handles ${types.RECEIVE_EVENTS} actions`, () => {
     test("sets isFetching to false and merges in new events", () => {
-      const one = {displayName: 'One'};
-      const two = {displayName: 'Two'};
-      const three = {displayName: 'Three'};
-      const four = {displayName: 'Four'};
+      const one = {id: 1, displayName: 'One'};
+      const two = {id: 2, displayName: 'Two'};
+      const three = {id: 3, displayName: 'Three'};
+      const four = {id: 4, displayName: 'Four'};
 
       const initialItems = [one, two];
       const initialState =
@@ -134,6 +134,23 @@ describe("events reducer", () => {
       const expectedItems = [one, two, three, four];
       const expectedState =
           makeEventsState({isFetching: false, items: expectedItems});
+
+      expect(events(initialState, action)).toEqual(expectedState);
+    });
+
+    test("ignores duplicate events", () => {
+      const one = {id: 1, displayName: 'One'};
+      const two = {id: 2, displayName: 'Two'};
+      const duplicate = {id: 2, displayName: 'Two'};
+      const three = {id: 3, displayName: 'Three'};
+
+      const initialItems = [one, two];
+      const initialState =
+          makeEventsState({isFetching: true, items: initialItems});
+      const expectedItems = [one, two, three];
+      const expectedState =
+          makeEventsState({isFetching: false, items: expectedItems});
+      const action = receiveEvents([duplicate, three]);
 
       expect(events(initialState, action)).toEqual(expectedState);
     });

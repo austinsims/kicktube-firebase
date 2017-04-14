@@ -36,7 +36,15 @@ function requestEvents(state: EventsState, action: Object): EventsState {
 }
 
 function receiveEvents(state: EventsState, action: Object): EventsState {
-  return {...state, isFetching: false, items: state.items.concat(action.items)};
+  const isUnique = newEvent =>
+      !state.items.find(existingEvent => existingEvent.id === newEvent.id);
+  const uniqueItems = action.items.filter(isUnique);
+  const items = state.items.concat(uniqueItems);
+  return {
+    ...state,
+    isFetching: false,
+    items,
+  };
 }
 
 /**
