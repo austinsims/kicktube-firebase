@@ -2,21 +2,18 @@
 
 import {createStore, applyMiddleware, compose} from 'redux';
 import {defaultEventsState} from './reducers/events';
-import {dislikeEvent} from './actions/dislikedEventsById';
 import {fetchEvents} from './actions/events';
 import {getLocation} from './util/location'
-import {setUser} from './actions/user';
 import {updateLoadingMessage} from './actions/loadingMessage'
-import arrayEqual from 'array-equal'
 import rootReducer from './reducers/index';
 import thunkMiddleware from 'redux-thunk';
 import type {FirebaseUser} from './util/typedefs';
-import firebaseApp from './util/firebaseApp';
 
 const defaultState = {
   loadingMessage: '',
   events: defaultEventsState,
   dislikedEventsById: [],
+  likedEventsById: [],
   user: null,
 };
 
@@ -33,47 +30,6 @@ getLocation().then(location => {
   store.dispatch(fetchEvents(location, 0)); 
 });
 
-function onProfile(snapshot) {
-  const val = snapshot.val();
-  const snapshotOfIds = val ? val.dislikedEventsById : {};
-  let lastKnownIds = Object.keys(snapshotOfIds)
-      .map(key => parseInt(key))
-      .filter(maybeNumber => !isNaN(maybeNumber))
-  
-  // Update store with dislikes from snapshot.
-  lastKnownIds.forEach(eventId => store.dispatch(dislikeEvent(eventId)));
-
-  // Keep the remote database in sync with further dislikes.
-  store.subscribe(function() {
-    const state = store.getState();
-
-    const user = state.user;
-    if (!user) {
-      return;
-    }
-
-    const dislikedEventIds = store.getState()['dislikedEventsById'];
-    if (arrayEqual(dislikedEventIds, lastKnownIds)) {
-      return;
-    }
-    lastKnownIds = dislikedEventIds;
-
-    const data = {};
-    dislikedEventIds.forEach(id => data[String(id)] = true);
-    console.log('data: ' + JSON.stringify(data));
-    firebaseApp.database().ref(`profile/${user.uid}`)
-        .child('dislikedEventsById')
-        .set(data);
-  });
-}
-
-firebaseApp.auth().onAuthStateChanged((user: FirebaseUser) => {
-  store.dispatch(setUser(user));
-  // When user logs in, get a one-time snapshot of their profile.
-  firebaseApp.database().ref(`profile/${user.uid}`)
-      .once('value')
-      .then(onProfile);
-});
 
 
 export default store;

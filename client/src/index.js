@@ -8,6 +8,8 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import store from './store';
+import './auth';
+import './database';
 
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941

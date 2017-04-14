@@ -1,26 +1,15 @@
 import {Date} from './Date';
+import {failTestOnPropTypeFailure} from '../util/testUtils';
 import {shallow} from 'enzyme';
 import React from 'react';
 
-import {
-  makeEvent,
-  makeEventsState,
-  failTestOnPropTypeFailure,
-} from '../util/testUtils';
-
 failTestOnPropTypeFailure();
 
-const items = [
-  makeEvent({displayName: 'Foo', date: "2017-4-9"}),
-  makeEvent({displayName: 'Bar', date: "2017-4-9"})
-];
-const events = makeEventsState({items});
-
-const wrapper = shallow(
-    <Date events={events}
-          date="2017-4-9"
-          dislikedEventsById={[]} />);
-
-it('renders without crashing', () => {
-  expect(wrapper).toHaveLength(1);
+describe('Date component', () => {
+  it('renders without crashing', () => {
+    const wrapper = shallow(<Date date={"2017-4-4"}
+                                  eventPredicate={function() {}}
+                                  dislikedEventsById={[]}/>);
+    expect(wrapper).toHaveLength(1);
+  });
 });

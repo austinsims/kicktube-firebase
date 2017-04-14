@@ -6,23 +6,24 @@ import React, {Component} from 'react';
 import type {SongkickEvent} from '../util/typedefs';
 
 
-export class Date extends Component {
+export class LikedEvents extends Component {
   props: {
-    date: string,
-    dislikedEventsById: Array<number>,
+    likedEventsById: Array<number>,
   }
 
   render() {
-    return <EventList title={this.props.date}
+    if (!this.props.likedEventsById.length) {
+      return null;
+    }
+    return <EventList title={'Liked'}
                       eventPredicate={this.eventPredicate.bind(this)} />;
   }
 
   eventPredicate(event: SongkickEvent): boolean {
-    return event.date === this.props.date &&
-        this.props.dislikedEventsById.indexOf(event.id) === -1;
+    return this.props.likedEventsById.indexOf(event.id) >= 0;
   }
 }
 
 export default connect(
-  state => ({dislikedEventsById: state.dislikedEventsById}),
-)(Date);
+  state => ({likedEventsById: state.likedEventsById}),
+)(LikedEvents);

@@ -16,9 +16,14 @@ const events = makeEventsState({items});
 
 describe('EventCard component', () => {
   it('renders without crashing', () => {
-    const wrapper = shallow(<EventCard eventId={eventId}
-                                       events={events}
-                                       dislikeEvent={function() {}}/>);
+    const wrapper = shallow(
+        <EventCard eventId={eventId}
+                   events={events}
+                   dislikeEvent={function() {}}
+                   likeEvent={function() {}}
+                   unlikeEvent={function() {}}
+                   dislikedEventsById={[]}
+                   likedEventsById={[]} />);
     expect(wrapper).toHaveLength(1);
   });
 });

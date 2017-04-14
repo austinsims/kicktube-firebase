@@ -4,6 +4,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import Date from './Date';
 import EventCard from './EventCard';
+import LikedEvents from './LikedEvents';
 import React, {Component} from 'react';
 
 import type {EventsState} from '../util/typedefs';
@@ -45,6 +46,7 @@ export class Calendar extends Component {
     const dates = new Set(this.props.events.items.map(event => event.date));
     return (
       <div style={{padding: '0 15px'}}>
+        <LikedEvents />
         {[...dates].map((date, index) => <Date date={date} key={index} />)}
       </div>
     );
