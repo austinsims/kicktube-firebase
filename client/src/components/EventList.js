@@ -5,9 +5,11 @@
  * predicate to determine which events to show.
  */
 
-import React, {Component} from 'react';
-import EventCard from './EventCard';
 import {connect} from 'react-redux';
+import EventCard from './EventCard';
+import MdExpandLess from 'react-icons/lib/md/expand-less';
+import MdExpandMore from 'react-icons/lib/md/expand-more';
+import React, {Component} from 'react';
 import type {SongkickEvent} from '../util/typedefs';
 
 import type {EventsState} from '../util/typedefs';
@@ -22,23 +24,47 @@ export class EventList extends Component {
     events: EventsState,
   };
 
+  state: {
+    expanded: boolean,
+  }
+
+  constructor() {
+    super();
+    this.state = {expanded: true};
+  }
+
   render() {
-    const eventIds = this.props.events.items
-        .filter(this.props.eventPredicate)
-        .map(event => event.id);
-    if (!eventIds.length) {
+    if (!this.getEventIds().length) {
       return null;
     }
     return (
       <div>
-        <h2 style={{
-            fontWeight: 'normal',
-            marginTop: '40px',
-          }}>{this.props.title}</h2>
-        {eventIds.map((id, index) => <EventCard eventId={id}
-                                                key={index}/>)}
+        <h2 style={{fontWeight: 'normal', marginTop: '40px'}}>
+          {this.props.title}
+          &nbsp;
+          {this.state.expanded ?
+              <MdExpandLess onClick={() => this.setState({expanded: false})}
+                            style={{cursor: 'pointer' }} /> :
+              <MdExpandMore onClick={() => this.setState({expanded: true})}
+                            style={{cursor: 'pointer' }} />}
+        </h2>
+        {this.maybeRenderEvents()}
       </div>
     );
+  }
+
+  maybeRenderEvents() {
+    if (!this.state.expanded) {
+      return;
+    }
+    return this.getEventIds()
+        .map((id, index) => <EventCard eventId={id} key={index}/>);
+  }
+
+  getEventIds() {
+    return this.props.events.items
+        .filter(this.props.eventPredicate)
+        .map(event => event.id);
   }
 }
 
