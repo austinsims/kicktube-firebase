@@ -13,22 +13,32 @@ export class Date extends Component {
     date: string,
     // From connect
     events: EventsState,
+    dislikedEventsById: Array<number>,
   };
 
   render() {
-    return (<div>
-      <h2 style={{
-          fontWeight: 'normal',
-          marginTop: '40px',
-        }}>{this.props.date}</h2>
-      {this.props.events.items
-          .filter(event => event.date === this.props.date)
-          .map((event, index) => <EventCard eventId={event.id}
-                                            key={index}
-                                            index={index}/>)}
-    </div>);
+    const eventIds = this.props.events.items
+        .filter(event => event.date === this.props.date)
+        .filter(event => this.props.dislikedEventsById.indexOf(event.id) === -1)
+        .map(event => event.id);
+    if (!eventIds.length) {
+      return null;
+    }
+    return (
+      <div>
+        <h2 style={{
+            fontWeight: 'normal',
+            marginTop: '40px',
+          }}>{this.props.date}</h2>
+        {eventIds.map((id, index) => <EventCard eventId={id}
+                                                key={index}/>)}
+      </div>
+    );
   }
 }
 
 
-export default connect(state => ({events: state.events}))(Date);
+export default connect(state => ({
+  events: state.events,
+  dislikedEventsById: state.dislikedEventsById,
+}))(Date);

@@ -16,7 +16,10 @@ const items = [
 ];
 const events = makeEventsState({items});
 
-const wrapper = shallow(<Date events={events} date="2017-4-9" />);
+const wrapper = shallow(
+    <Date events={events}
+          date="2017-4-9"
+          dislikedEventsById={[]} />);
 
 it('renders without crashing', () => {
   expect(wrapper).toHaveLength(1);

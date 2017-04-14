@@ -18,16 +18,7 @@ describe('EventCard component', () => {
   it('renders without crashing', () => {
     const wrapper = shallow(<EventCard eventId={eventId}
                                        events={events}
-                                       dislikeEvent={function() {}}
-                                       dislikedEventsById={[]}/>);
+                                       dislikeEvent={function() {}}/>);
     expect(wrapper).toHaveLength(1);
-  });
-
-  it('does not render an event that was disliked', () => {
-    const wrapper = shallow(<EventCard eventId={eventId}
-                                       events={events}
-                                       dislikeEvent={function() {}}
-                                       dislikedEventsById={[eventId]}/>);
-    expect(wrapper.get(0)).toBeFalsy();
   });
 });

@@ -17,16 +17,12 @@ import firebase from 'firebase';
 export class EventCard extends Component {
   props: {
     events: EventsState,
-    dislikedEventsById: Array<number>,
     eventId: number,
     dislikeEvent: Function,
   };
 
   render() {
     const event = this.findEvent();
-    if (this.props.dislikedEventsById.indexOf(event.id) >= 0) {
-      return null;
-    }
     
     return (
       <Card containerStyle={{margin: '15px'}}>
@@ -80,7 +76,6 @@ export class EventCard extends Component {
 export default connect(
   state => ({
     events: state.events,
-    dislikedEventsById: state.dislikedEventsById,
     user: state.user,
   }),
   dispatch => bindActionCreators({dislikeEvent}, dispatch),
