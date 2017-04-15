@@ -22,6 +22,10 @@ export class SeeMoreButton extends React.Component {
       return null;
     }
 
+    if (!!this.props.loadingMessage) {
+      return null;
+    }
+
     if (this.props.events.isFetching) {
       return this.renderSpinner();
     }
@@ -60,6 +64,9 @@ export class SeeMoreButton extends React.Component {
 }
 
 export default connect(
-  state => ({events: state.events}),
+  state => ({
+    events: state.events,
+    loadingMessage: state.loadingMessage,
+  }),
   dispatch => bindActionCreators({fetchEvents}, dispatch),
 )(SeeMoreButton);

@@ -12,8 +12,8 @@ class App extends Component {
     return (
       <div>
         <KicktubeAppBar />
-        <LoadingMessage />
         <Calendar events={this.props.events} />
+        <LoadingMessage />
         <SeeMoreButton />
       </div>
     );

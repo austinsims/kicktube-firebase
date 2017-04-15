@@ -68,6 +68,15 @@ export type EventsState = {
   isFetching: boolean,
 };
 
+export type ReduxState = {
+  loadingMessage?: string,
+  events?: EventsState,
+  dislikedEventsById?: Array<number>,
+  dislikedEventsById?: Array<number>,
+  likedEventsById?: Array<number>,
+  user?: ?FirebaseUser,
+}
+
 export type Location = {
   latitude: number,
   longitude: number,
