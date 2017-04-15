@@ -15,7 +15,7 @@ export class SeeMoreButton extends React.Component {
     events: EventsState,
     fetchEvents: Function,
   };
-  lastRequestedPage: number = 0;
+  lastRequestedPage: number = 1;
 
   render() {
     if (!this.props.events.items.length) {
